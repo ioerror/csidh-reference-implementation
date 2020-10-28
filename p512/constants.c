@@ -4,7 +4,7 @@
 
 const uint64_t pbits = 511;
 
-const struct uint p = {{
+const struct ui p = {{
     0x1b81b90533c6c87b, 0xc2721bf457aca835, 0x516730cc1f0b4f25, 0xa7aac6c567f35507,
     0x5afbfcc69322c9cd, 0xb42d083aedc88c42, 0xfc8ab0d15e3e4c4a, 0x65b48e8f740f89bf,
 }};
@@ -27,19 +27,19 @@ const struct fp r_squared_mod_p = {{
 const uint64_t inv_min_p_mod_r = 0x66c1301f632e294d;
 
 /* p - 2 */
-const struct uint p_minus_2 = {{
+const struct ui p_minus_2 = {{
     0x1b81b90533c6c879, 0xc2721bf457aca835, 0x516730cc1f0b4f25, 0xa7aac6c567f35507,
     0x5afbfcc69322c9cd, 0xb42d083aedc88c42, 0xfc8ab0d15e3e4c4a, 0x65b48e8f740f89bf,
 }};
 
 /* (p - 1) / 2 */
-const struct uint p_minus_1_halves = {{
+const struct ui p_minus_1_halves = {{
     0x8dc0dc8299e3643d, 0xe1390dfa2bd6541a, 0xa8b398660f85a792, 0xd3d56362b3f9aa83,
     0x2d7dfe63499164e6, 0x5a16841d76e44621, 0xfe455868af1f2625, 0x32da4747ba07c4df,
 }};
 
 /* floor(4 sqrt(p)) */
-const struct uint four_sqrt_p = {{
+const struct ui four_sqrt_p = {{
     0x17895e71e1a20b3f, 0x38d0cd95f8636a56, 0x142b9541e59682cd, 0x856f1399d91d6592,
     0x02,
 }};

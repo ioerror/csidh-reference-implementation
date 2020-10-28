@@ -3,27 +3,27 @@
 #include <string.h>
 
 #include "params.h"
-#include "uint.h"
+#include "ui.h"
 #include "fp.h"
 #include "rng.h"
 
 void fp_set(fp *x, uint64_t y)
 {
-    uint_set((uint *) x, y);
-    fp_enc(x, (uint *) x);
+    ui_set((ui *) x, y);
+    fp_enc(x, (ui *) x);
 }
 
-static void reduce_once(uint *x)
+static void reduce_once(ui *x)
 {
-    uint t;
-    if (!uint_sub3(&t, x, &p))
+    ui t;
+    if (!ui_sub3(&t, x, &p))
         *x = t;
 }
 
 void fp_add3(fp *x, fp const *y, fp const *z)
 {
-    uint_add3((uint *) x, (uint *) y, (uint *) z);
-    reduce_once((uint *) x);
+    ui_add3((ui *) x, (ui *) y, (ui *) z);
+    reduce_once((ui *) x);
 }
 
 void fp_add2(fp *x, fp const *y)
@@ -33,8 +33,8 @@ void fp_add2(fp *x, fp const *y)
 
 void fp_sub3(fp *x, fp const *y, fp const *z)
 {
-    if (uint_sub3((uint *) x, (uint *) y, (uint *) z))
-        uint_add3((uint *) x, (uint *) x, &p);
+    if (ui_sub3((ui *) x, (ui *) y, (ui *) z))
+        ui_add3((ui *) x, (ui *) x, &p);
 }
 
 void fp_sub2(fp *x, fp const *y)
@@ -45,14 +45,14 @@ void fp_sub2(fp *x, fp const *y)
 
 /* Montgomery arithmetic */
 
-void fp_enc(fp *x, uint const *y)
+void fp_enc(fp *x, ui const *y)
 {
     fp_mul3(x, (fp *) y, &r_squared_mod_p);
 }
 
-void fp_dec(uint *x, fp const *y)
+void fp_dec(ui *x, fp const *y)
 {
-    fp_mul3((fp *) x, y, (fp *) &uint_1);
+    fp_mul3((fp *) x, y, (fp *) &ui_1);
 }
 
 void fp_mul3(fp *x, fp const *y, fp const *z)
@@ -88,7 +88,7 @@ void fp_mul3(fp *x, fp const *y, fp const *z)
     for (size_t i = 0; i < LIMBS; ++i)
         x->c[i] = t[(LIMBS + i) % (LIMBS + 1)];
 
-    reduce_once((uint *) x);
+    reduce_once((ui *) x);
 }
 
 
@@ -108,7 +108,7 @@ void fp_sq1(fp *x)
 }
 
 /* (obviously) not constant time in the exponent */
-static void fp_pow(fp *x, uint const *e)
+static void fp_pow(fp *x, ui const *e)
 {
     fp y = *x;
     *x = fp_1;

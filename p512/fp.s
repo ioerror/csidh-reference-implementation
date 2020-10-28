@@ -12,7 +12,7 @@
 .global fp_set
 fp_set:
     push rdi
-    call uint_set
+    call ui_set
     pop rdi
     mov rsi, rdi
     jmp fp_enc
@@ -86,7 +86,7 @@ fp_cswap:
 .global fp_add3
 fp_add3:
     push rdi
-    call uint_add3
+    call ui_add3
     pop rdi
     jmp .reduce_once
 
@@ -98,7 +98,7 @@ fp_add2:
 .global fp_sub3
 fp_sub3:
     push rdi
-    call uint_sub3
+    call ui_sub3
     pop rdi
     xor rsi, rsi
     xor rdx, rdx
@@ -142,7 +142,7 @@ fp_enc:
 
 .global fp_dec
 fp_dec:
-    lea rdx, [rip + uint_1]
+    lea rdx, [rip + ui_1]
     jmp fp_mul3
 
 .global fp_mul3

@@ -1,0 +1,26 @@
+This software is available in the public domain.
+
+"CSIDH: An efficient post-quantum commutative group action"
+
+In https://csidh.isogeny.org/csidh-20181118.pdf the authors state on
+page 29 in a footnote: "All our code is published in the public domain
+and is available for download at
+https://yx7.cc/code/csidh/csidh-latest.tar.xz."
+
+The initial commit of this git repository imports the release from
+https://csidh.isogeny.org/software.html which links to the download link of
+https://yx7.cc/code/csidh/csidh-latest.tar.xz which corresponds to the
+csidh-20180826 release. This repository and the software within is accordingly
+in the public domain.
+
+The authors of this project according to the project page (
+https://csidh.isogeny.org/people.html ) are:
+
+  Wouter Castryck, KU Leuven, Belgium
+  Tanja Lange, Technische Universiteit Eindhoven
+  Chloe Martindale, Technische Universiteit Eindhoven
+  Joost Renes, Radboud Universiteit
+  Lorenz Panny, Technische Universiteit Eindhoven
+
+See https://csidh.isogeny.org/csidh-20181118.pdf and
+https://csidh.isogeny.org/ for further information about CSIDH.

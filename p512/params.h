@@ -5,7 +5,7 @@
 
 #define LIMBS 8
 
-typedef struct uint { uint64_t c[LIMBS]; } uint;
+typedef struct ui { uint64_t c[LIMBS]; } ui;
 typedef struct fp { uint64_t c[LIMBS]; } fp;
 typedef struct proj { struct fp x, z; } proj;
 

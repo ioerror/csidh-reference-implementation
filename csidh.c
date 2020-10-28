@@ -2,7 +2,7 @@
 #include <string.h>
 #include <assert.h>
 
-#include "uint.h"
+#include "ui.h"
 #include "fp.h"
 #include "mont.h"
 #include "csidh.h"
@@ -12,7 +12,7 @@ const public_key base = {0}; /* A = 0 */
 
 /* TODO allow different encodings depending on parameters */
 /* TODO waste less randomness */
-void csidh_private(private_key *priv)
+__attribute__((visibility("default"))) void csidh_private(private_key *priv)
 {
     memset(&priv->e, 0, sizeof(priv->e));
     for (size_t i = 0; i < NUM_PRIMES; ) {
@@ -28,7 +28,7 @@ void csidh_private(private_key *priv)
     }
 }
 
-static bool validate_rec(proj *P, proj const *A, size_t lower, size_t upper, uint *order, bool *is_supersingular)
+static bool validate_rec(proj *P, proj const *A, size_t lower, size_t upper, ui *order, bool *is_supersingular)
 {
     assert(lower < upper);
 
@@ -39,8 +39,8 @@ static bool validate_rec(proj *P, proj const *A, size_t lower, size_t upper, uin
 
         if (memcmp(&P->z, &fp_0, sizeof(fp))) {
 
-            uint tmp;
-            uint_set(&tmp, primes[lower]);
+            ui tmp;
+            ui_set(&tmp, primes[lower]);
             xMUL(P, A, P, &tmp);
 
             if (memcmp(&P->z, &fp_0, sizeof(fp))) {
@@ -49,9 +49,9 @@ static bool validate_rec(proj *P, proj const *A, size_t lower, size_t upper, uin
                 return true;
             }
 
-            uint_mul3_64(order, order, primes[lower]);
+            ui_mul3_64(order, order, primes[lower]);
 
-            if (uint_sub3(&tmp, &four_sqrt_p, order)) { /* returns borrow */
+            if (ui_sub3(&tmp, &four_sqrt_p, order)) { /* returns borrow */
                 /* order > 4 sqrt(p), hence definitely supersingular */
                 *is_supersingular = true;
                 return true;
@@ -64,11 +64,11 @@ static bool validate_rec(proj *P, proj const *A, size_t lower, size_t upper, uin
 
     size_t mid = lower + (upper - lower + 1) / 2;
 
-    uint cl = uint_1, cu = uint_1;
+    ui cl = ui_1, cu = ui_1;
     for (size_t i = lower; i < mid; ++i)
-        uint_mul3_64(&cu, &cu, primes[i]);
+        ui_mul3_64(&cu, &cu, primes[i]);
     for (size_t i = mid; i < upper; ++i)
-        uint_mul3_64(&cl, &cl, primes[i]);
+        ui_mul3_64(&cl, &cl, primes[i]);
 
     proj Q;
 
@@ -85,8 +85,8 @@ bool validate(public_key const *in)
 {
     /* make sure the curve is nonsingular: A^2-4 != 0 */
     {
-        uint dummy;
-        if (!uint_sub3(&dummy, (uint *) &in->A, &p)) /* returns borrow */
+        ui dummy;
+        if (!ui_sub3(&dummy, (ui *) &in->A, &p)) /* returns borrow */
             /* A >= p */
             return false;
 
@@ -114,7 +114,7 @@ bool validate(public_key const *in)
         xDBL(&P, &A, &P);
 
         bool is_supersingular;
-        uint order = uint_1;
+        ui order = ui_1;
 
         if (validate_rec(&P, &A, 0, NUM_PRIMES, &order, &is_supersingular))
             return is_supersingular;
@@ -138,9 +138,9 @@ static void montgomery_rhs(fp *rhs, fp const *A, fp const *x)
 /* totally not constant-time. */
 void action(public_key *out, public_key const *in, private_key const *priv)
 {
-    uint k[2];
-    uint_set(&k[0], 4); /* maximal 2-power in p+1 */
-    uint_set(&k[1], 4); /* maximal 2-power in p+1 */
+    ui k[2];
+    ui_set(&k[0], 4); /* maximal 2-power in p+1 */
+    ui_set(&k[1], 4); /* maximal 2-power in p+1 */
 
     uint8_t e[2][NUM_PRIMES];
 
@@ -151,18 +151,18 @@ void action(public_key *out, public_key const *in, private_key const *priv)
         if (t > 0) {
             e[0][i] = t;
             e[1][i] = 0;
-            uint_mul3_64(&k[1], &k[1], primes[i]);
+            ui_mul3_64(&k[1], &k[1], primes[i]);
         }
         else if (t < 0) {
             e[1][i] = -t;
             e[0][i] = 0;
-            uint_mul3_64(&k[0], &k[0], primes[i]);
+            ui_mul3_64(&k[0], &k[0], primes[i]);
         }
         else {
             e[0][i] = 0;
             e[1][i] = 0;
-            uint_mul3_64(&k[0], &k[0], primes[i]);
-            uint_mul3_64(&k[1], &k[1], primes[i]);
+            ui_mul3_64(&k[0], &k[0], primes[i]);
+            ui_mul3_64(&k[1], &k[1], primes[i]);
         }
     }
 
@@ -193,10 +193,10 @@ void action(public_key *out, public_key const *in, private_key const *priv)
 
             if (e[sign][i]) {
 
-                uint cof = uint_1;
+                ui cof = ui_1;
                 for (size_t j = 0; j < i; ++j)
                     if (e[sign][j])
-                        uint_mul3_64(&cof, &cof, primes[j]);
+                        ui_mul3_64(&cof, &cof, primes[j]);
 
                 proj K;
                 xMUL(&K, &A, &P, &cof);
@@ -206,7 +206,7 @@ void action(public_key *out, public_key const *in, private_key const *priv)
                     xISOG(&A, &P, &K, primes[i]);
 
                     if (!--e[sign][i])
-                        uint_mul3_64(&k[sign], &k[sign], primes[i]);
+                        ui_mul3_64(&k[sign], &k[sign], primes[i]);
 
                 }
 
@@ -225,7 +225,7 @@ void action(public_key *out, public_key const *in, private_key const *priv)
 }
 
 /* includes public-key validation. */
-bool csidh(public_key *out, public_key const *in, private_key const *priv)
+__attribute__((visibility("default"))) bool csidh(public_key *out, public_key const *in, private_key const *priv)
 {
     if (!validate(in)) {
         fp_random(&out->A);

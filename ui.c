@@ -2,26 +2,26 @@
 #include <stddef.h>
 
 #include "params.h"
-#include "uint.h"
+#include "ui.h"
 
 /* assumes little-endian throughout. */
 
-uint const uint_1 = {{1}};
+ui const ui_1 = {{1}};
 
-void uint_set(uint *x, uint64_t y)
+void ui_set(ui *x, uint64_t y)
 {
     x->c[0] = y;
     for (size_t i = 1; i < LIMBS; ++i)
         x->c[i] = 0;
 }
 
-bool uint_bit(uint const *x,  uint64_t k)
+bool ui_bit(ui const *x,  uint64_t k)
 {
     return 1 & (x->c[k / 64] >> k % 64);
 }
 
 
-bool uint_add3(uint *x, uint const *y, uint const *z)
+bool ui_add3(ui *x, ui const *y, ui const *z)
 {
     bool c = 0;
     for (size_t i = 0; i < LIMBS; ++i) {
@@ -32,7 +32,7 @@ bool uint_add3(uint *x, uint const *y, uint const *z)
     return c;
 }
 
-bool uint_sub3(uint *x, uint const *y, uint const *z)
+bool ui_sub3(ui *x, ui const *y, ui const *z)
 {
     bool b = 0;
     for (size_t i = 0; i < LIMBS; ++i) {
@@ -43,7 +43,7 @@ bool uint_sub3(uint *x, uint const *y, uint const *z)
     return b;
 }
 
-void uint_mul3_64(uint *x, uint const *y, uint64_t z)
+void ui_mul3_64(ui *x, ui const *y, uint64_t z)
 {
     uint64_t c = 0;
     for (size_t i = 0; i < LIMBS; ++i) {

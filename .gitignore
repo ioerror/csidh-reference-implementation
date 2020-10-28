@@ -1,0 +1,5 @@
+csidh-p512-bench
+csidh-p512-demo
+csidh-p512-util
+*.o
+*.a

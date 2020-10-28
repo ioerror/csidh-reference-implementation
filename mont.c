@@ -2,7 +2,7 @@
 #include <assert.h>
 
 #include "params.h"
-#include "uint.h"
+#include "ui.h"
 #include "fp.h"
 #include "mont.h"
 
@@ -73,7 +73,7 @@ void xADD(proj *S, proj const *P, proj const *Q, proj const *PQ)
 /* Montgomery ladder. */
 /* P must not be the unique point of order 2. */
 /* not constant-time! */
-void xMUL(proj *Q, proj const *A, proj const *P, uint const *k)
+void xMUL(proj *Q, proj const *A, proj const *P, ui const *k)
 {
     proj R = *P;
     const proj Pcopy = *P; /* in case Q = P */
@@ -82,11 +82,11 @@ void xMUL(proj *Q, proj const *A, proj const *P, uint const *k)
     Q->z = fp_0;
 
     unsigned long i = 64 * LIMBS;
-    while (--i && !uint_bit(k, i));
+    while (--i && !ui_bit(k, i));
 
     do {
 
-        bool bit = uint_bit(k, i);
+        bool bit = ui_bit(k, i);
 
         if (bit) { proj T = *Q; *Q = R; R = T; } /* not constant-time */
         //fp_cswap(&Q->x, &R.x, bit);

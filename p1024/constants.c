@@ -4,7 +4,7 @@
 
 const uint64_t pbits = 1020;
 
-const struct uint p = {{
+const struct ui p = {{
     0xdbe34c5460e36453, 0xa1d81eebbc3d344d, 0x514ba72cb8d89fd3, 0xc2cab6a0e287f1bd,
     0x642aca4d5a313709, 0x6b317c5431541f40, 0xb97c56d1de81ede5, 0x0978dbeed90a2b58,
     0x7611ad4f90441c80, 0xf811d9c419ec8329, 0x4d6c594a8ad82d2d, 0xf06de2471cf9386e,
@@ -33,7 +33,7 @@ const struct fp r_squared_mod_p = {{
 const uint64_t inv_min_p_mod_r = 0xd2c2c24160038025;
 
 /* p - 2 */
-const struct uint p_minus_2 = {{
+const struct ui p_minus_2 = {{
     0xdbe34c5460e36451, 0xa1d81eebbc3d344d, 0x514ba72cb8d89fd3, 0xc2cab6a0e287f1bd,
     0x642aca4d5a313709, 0x6b317c5431541f40, 0xb97c56d1de81ede5, 0x0978dbeed90a2b58,
     0x7611ad4f90441c80, 0xf811d9c419ec8329, 0x4d6c594a8ad82d2d, 0xf06de2471cf9386e,
@@ -41,7 +41,7 @@ const struct uint p_minus_2 = {{
 }};
 
 /* (p - 1) / 2 */
-const struct uint p_minus_1_halves = {{
+const struct ui p_minus_1_halves = {{
     0xedf1a62a3071b229, 0xd0ec0f75de1e9a26, 0xa8a5d3965c6c4fe9, 0xe1655b507143f8de,
     0x32156526ad189b84, 0xb598be2a18aa0fa0, 0x5cbe2b68ef40f6f2, 0x04bc6df76c8515ac,
     0xbb08d6a7c8220e40, 0xfc08ece20cf64194, 0x26b62ca5456c1696, 0xf836f1238e7c9c37,
@@ -49,7 +49,7 @@ const struct uint p_minus_1_halves = {{
 }};
 
 /* floor(4 sqrt(p)) */
-const struct uint four_sqrt_p = {{
+const struct ui four_sqrt_p = {{
     0xeba75c5815bb0d57, 0xfec8564a9ae457c6, 0xe362e1c2334bd738, 0x56f74a246ef0a30e,
     0x4a598c9571aeb858, 0xc5617b211ccad355, 0x4fb69e4928ccc442, 0xf643475c7915859c,
 }};

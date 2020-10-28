@@ -3,14 +3,14 @@
 
 .section .rodata
 
-.global uint_1
-uint_1: .quad 1, 0, 0, 0, 0, 0, 0, 0
+.global ui_1
+ui_1: .quad 1, 0, 0, 0, 0, 0, 0, 0
 
 
 .section .text
 
-.global uint_set
-uint_set:
+.global ui_set
+ui_set:
     cld
     mov rax, rsi
     stosq
@@ -20,8 +20,8 @@ uint_set:
     ret
 
 
-.global uint_bit
-uint_bit:
+.global ui_bit
+ui_bit:
     mov rcx, rsi
     and rcx, 0x3f
     shr rsi, 6
@@ -31,8 +31,8 @@ uint_bit:
     ret
 
 
-.global uint_add3
-uint_add3:
+.global ui_add3
+ui_add3:
     mov rax, [rsi +  0]
     add rax, [rdx +  0]
     mov [rdi +  0], rax
@@ -47,8 +47,8 @@ uint_add3:
     movzx rax, al
     ret
 
-.global uint_sub3
-uint_sub3:
+.global ui_sub3
+ui_sub3:
     mov rax, [rsi +  0]
     sub rax, [rdx +  0]
     mov [rdi +  0], rax
@@ -64,8 +64,8 @@ uint_sub3:
     ret
 
 
-.global uint_mul3_64
-uint_mul3_64:
+.global ui_mul3_64
+ui_mul3_64:
 
     mulx r10, rax, [rsi +  0]
     mov [rdi +  0], rax

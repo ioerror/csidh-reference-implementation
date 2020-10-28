@@ -11,9 +11,16 @@
 
 static __inline__ uint64_t rdtsc(void)
 {
+#ifdef X64
     uint32_t hi, lo;
     __asm__ __volatile__ ("rdtsc" : "=a"(lo), "=d"(hi));
     return lo | (uint64_t) hi << 32;
+#endif
+#ifdef A64
+    uint64_t t;
+    __asm__ __volatile__ ("mrs %0, cntvct_el0" : "=r"(t));
+    return t;
+#endif
 }
 
 
@@ -63,7 +70,13 @@ int main()
         act ? " action" : ""
     );
 
+#ifdef X64
     __asm__ __volatile__ ("mov %%rsp, %0" : "=m"(stack));
+#endif
+#ifdef A64
+    __asm__ __volatile__ ("mov %0, sp\n\t" : "=r"(stack)::);
+#endif
+
     stack -= stacksz;
 
     for (unsigned long i = 0; i < its; ++i) {
@@ -76,11 +89,13 @@ int main()
 
         csidh_private(&priv);
 
+#if !defined(__OpenBSD__)
         /* spray stack */
         unsigned char canary;
         randombytes(&canary, 1);
         for (size_t j = 0; j < stacksz; ++j)
             stack[j] = canary;
+#endif
 
         t0 = clock();   /* uses stack, but not too much */
         c0 = rdtsc();
@@ -100,11 +115,13 @@ int main()
         cycles += c1 - c0;
         time += t1 - t0;
 
+#if !defined(__OpenBSD__)
         /* check stack */
         assert(*stack == canary);   /* make sure we sprayed enough */
         for (size_t j = 0; j < stacksz - bytes; ++j)
             if (stack[j] != canary)
                 bytes = stacksz - j;
+#endif
     }
 
     printf("iterations: %lu\n", its);

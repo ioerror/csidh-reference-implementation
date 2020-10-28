@@ -9,7 +9,7 @@
 #include "fp.h"
 #include "csidh.h"
 
-void uint_print(uint const *x)
+void uint_print(ui const *x)
 {
     for (size_t i = 8*LIMBS-1; i < 8*LIMBS; --i)
         printf("%02hhx", i[(unsigned char *) x->c]);
@@ -17,7 +17,7 @@ void uint_print(uint const *x)
 
 void fp_print(fp const *x)
 {
-    uint y;
+    ui y;
     fp_dec(&y, x);
     uint_print(&y);
 }
